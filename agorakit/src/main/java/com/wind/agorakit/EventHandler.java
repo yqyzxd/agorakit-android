@@ -33,4 +33,7 @@ public interface EventHandler {
 
     ///////////////////////////////音乐混音相关/////////////////////////////////////
     void onAudioMixingStateChanged(int state, int reason);
+
+    //////////////////////////////断网重连后重新加入频道成功回调///////////////////////
+    void onRejoinChannelSuccess(String channel, int uid, int elapsed);
 }

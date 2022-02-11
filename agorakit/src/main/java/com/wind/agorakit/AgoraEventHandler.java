@@ -129,4 +129,11 @@ public class AgoraEventHandler extends IRtcEngineEventHandler {
             handler.onAudioMixingStateChanged(state, reason);
         }
     }
+
+    @Override
+    public void onRejoinChannelSuccess(String channel, int uid, int elapsed) {
+        for (EventHandler handler : mHandler) {
+            handler.onRejoinChannelSuccess(channel, uid,elapsed);
+        }
+    }
 }
