@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
-group='com.github.yqyzxd'
+group = 'com.github.yqyzxd'
 android {
     compileSdkVersion 29
     //buildToolsVersion "29.0.2"
@@ -24,11 +24,31 @@ android {
 }
 
 dependencies {
-    api fileTree(dir: 'libs', include: ['*.jar'])
+    //api fileTree(dir: 'libs', include: ['*.jar'])
+
+    api files("libs/agora-rtc-sdk.jar") {
+        builtBy "copyJarFromlib"
+    }
     //api 'io.agora.rtc:full-sdk:2.9.2'
     //api 'com.github.agorabuilder:native-full-sdk:3.4.2'
     implementation 'androidx.appcompat:appcompat:1.2.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+}
+
+task unzipJar(type: Copy) {
+    delete("$buildDir/libs/agora-rtc-sdk-new")
+    delete("$buildDir/libs/agora-rtc-sdk.jar")
+    from zipTree('third/agora-rtc-sdk.jar')
+    exclude "com/huawei/**"
+    into ("$buildDir/libs/agora-rtc-sdk-new")
+}
+task jar(type: Jar, dependsOn: ['unzipJar']){
+    baseName 'agora-rtc-sdk'
+    from("$buildDir/libs/agora-rtc-sdk-new")
+}
+task copyJarFromlib(type: Copy, dependsOn:["jar"]){
+    from files("$buildDir/libs/agora-rtc-sdk.jar")
+    into("$projectDir/libs")
 }
